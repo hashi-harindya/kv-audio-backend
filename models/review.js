@@ -1,51 +1,47 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const reviewSchema = new mongoose.Schema({
 
     email : {
         type : String,
         required : true,
-        unique : true
+        unique : true,
     },
 
-    password : {
+    name : {
         type : String,
+        required : true
+    },
+
+    rating : {
+        type : Number,
+        required : true
+    },
+
+    Comment : {
+        type : String,
+        required : true
+    },
+
+    date : {
+        type : Date,
         required : true,
-    },
-
-    role : {
-        type : String,
-        required : true,
-        default : "customer"
-    },
-
-    firstName : {
-        type : String,
-        required : true
-    },
-
-    lastName : {
-        type : String,
-        required : true
-    },
-
-    address : {
-        type : String,
-        required : true
-    },
-
-    phone : {
-        type : String,
-        required : true
+        default : Date.now()
     },
 
     profilePicture : {
         type : String,
         required : true,
         default : "https://www.shutterstock.com/image-vector/user-profile-icon-vector-avatar-600nw-2247726673.jpg"
+    },
+
+    isApproved : {
+        type : Boolean,
+        required : true,
+        default : false
     }
-});
+})
 
-const User = mongoose.model("User",userSchema);
+const Review = mongoose.model("Review", reviewSchema);
 
-export default User;
+export default Review;
