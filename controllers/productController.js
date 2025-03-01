@@ -1,8 +1,7 @@
 import product from "../models/product.js";
+import { isItAdmin } from "./userController.js";
 
 export function addProduct(req,res){
-
-    console.log(req.user)
 
     if(req.user == null){
         res.status(401).json({
@@ -18,13 +17,34 @@ export function addProduct(req,res){
         return
     }
 
-    const data = req.body;
-    const newProduct = new product(data);
-    newProduct.save()
-    .then(()=>{
-        res.json({message:"Product added successfully"});
-    })
-    .catch((error)=>{
-        res.status(500).json({error:"Product addition failed"});
-    });
+const data = req.body;
+const newProduct = new product(data);
+newProduct.save()
+.then(()=>{
+    res.json({message:"Product added successfully"});
+})
+.catch((error)=>{
+    res.status(500).json({error:"Product addition failed"});
+});
 }
+
+export async function getProducts(req,res){
+    try{
+
+        if(isItAdmin(req)){
+        const products = await product.find();
+        res.json(products);
+        return;
+    }else{
+        const products = await product.find
+        ({availability:true});
+        res.json(products);
+        return;
+    }
+    }catch(e){
+        res.status(500).json({
+            message: "Failed to get products"
+        })
+    }
+}
+
